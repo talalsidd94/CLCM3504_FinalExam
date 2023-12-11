@@ -1,9 +1,9 @@
 <?php
 
-$endpoint = getenv('RDS_ENDPOINT');
-$username = getenv('RDS_USERNAME');
-$password = getenv('RDS_PASSWORD');
-$database = getenv('RDS_DATABASE');
+$endpoint = "main-db.cnovzkuebagr.us-east-1.rds.amazonaws.com";
+$username = "admin";
+$password = "zc49OdtssIjcBh18fR4X5";
+$database = "techco";
 
 
 function validateFormData($data)
