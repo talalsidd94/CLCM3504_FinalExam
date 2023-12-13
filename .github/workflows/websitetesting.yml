@@ -10,12 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Wait for Deployment
-        uses: actions/wait-for-deployment@v1
-        with:
-          timeout: '20m'
-          deployment: 'deploy'
-
       - name: Test Website Functionality
         run: |
           CONTAINER_ID=$(docker ps --filter "name=my-doc-app" --format "{{.ID}}")
