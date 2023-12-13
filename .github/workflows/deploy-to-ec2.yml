@@ -72,3 +72,18 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/fexam:latest
             docker run -d -p 80:80 --name my-doc-app ${{ secrets.DOCKERHUB_USERNAME }}/fexam:latest
             docker image prune -f
+  automated-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test Website Functionality
+        run: |
+          CONTAINER_ID=$(docker ps --filter "name=my-doc-app" --format "{{.ID}}")
+          STATUS_CODE=$(docker exec -it $CONTAINER_ID curl -s -o /dev/null -w "%{http_code}" http://localhost)
+
+          if [ "$STATUS_CODE" == "200" ]; then
+            echo "Website is accessible. Automated tests passed!"
+          else
+            echo "Website is not accessible. Automated tests failed!"
+            exit 1
+          fi
