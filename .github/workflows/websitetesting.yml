@@ -1,0 +1,29 @@
+on:
+  workflow_run:
+    workflows: ["Your Workflow Name"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  automated-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Wait for Deployment
+        uses: actions/wait-for-deployment@v1
+        with:
+          timeout: '20m'
+          deployment: 'deploy'
+
+      - name: Test Website Functionality
+        run: |
+          CONTAINER_ID=$(docker ps --filter "name=my-doc-app" --format "{{.ID}}")
+          STATUS_CODE=$(docker exec -it $CONTAINER_ID curl -s -o /dev/null -w "%{http_code}" http://localhost)
+
+          if [ "$STATUS_CODE" == "200" ]; then
+            echo "Website is accessible. Automated tests passed!"
+          else
+            echo "Website is not accessible. Automated tests failed!"
+            exit 1
+          fi
